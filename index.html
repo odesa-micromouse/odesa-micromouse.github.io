@@ -103,6 +103,13 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 240, 255, 0.2);
         }
 
+        /* Затемнене скло для карток (ТІЛЬКИ ДЛЯ МОБІЛЬНИХ) */
+        @media (max-width: 767px) {
+            .glass-card {
+                background: linear-gradient(135deg, rgba(4, 9, 20, 0.75) 0%, rgba(4, 9, 20, 0.4) 100%) !important;
+            }
+        }
+
         /* Формы, похожие на каплю */
         .shape-blob {
             animation: liquidMorph 12s ease-in-out infinite, liquidFloat 6s ease-in-out infinite;
@@ -137,11 +144,11 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05), inset 0 0 15px rgba(255, 255, 255, 0.5) !important;
         }
         .nav-light-mode .nav-text-color {
-            color: #040914 !important; /* Тёмный цвет текста */
+            color: #040914 !important;
             font-weight: 700;
         }
         .nav-light-mode .nav-cyan-text {
-            color: #0077ff !important; /* Синий вместо светлого циана для читаемости */
+            color: #0077ff !important;
             text-shadow: none !important;
         }
         .nav-light-mode .nav-circle, 
@@ -157,7 +164,6 @@
         .ambient-blob {
             position: absolute;
             filter: blur(90px);
-            opacity: 0.5;
             mix-blend-mode: screen;
             z-index: -1;
             border-radius: 50%;
@@ -168,11 +174,24 @@
 
 <body class="selection:bg-liquidCyan/30 selection:text-white">
 
-    <!-- ФОНОВЫЕ "ЖИДКИЕ" ПЯТНА -->
-    <div class="fixed inset-0 pointer-events-none z-[-1]">
-        <div class="ambient-blob bg-liquidCyan w-[600px] h-[600px] top-[-10%] left-[-10%]"></div>
-        <div class="ambient-blob bg-liquidPurple w-[700px] h-[700px] bottom-[-20%] right-[-10%]" style="animation-delay: -5s;"></div>
-        <div class="ambient-blob bg-liquidMagenta w-[500px] h-[500px] top-[40%] left-[30%]" style="animation-delay: -10s; opacity: 0.3;"></div>
+    <!-- ФОНОВЫЕ "ЖИДКИЕ" ПЯТНА (Адаптированы под мобильные) -->
+    <div class="fixed inset-0 pointer-events-none z-[-1] overflow-hidden">
+        <!-- Cyan Blob (Top Left) -->
+        <div class="ambient-blob bg-liquidCyan opacity-50
+                    w-[120vw] h-[120vw] -top-[10%] -left-[20%] 
+                    md:w-[600px] md:h-[600px] md:top-[-10%] md:left-[-10%]"></div>
+        
+        <!-- Magenta Blob (Middle Right) -->
+        <div class="ambient-blob bg-liquidMagenta opacity-40 md:opacity-30
+                    w-[100vw] h-[100vw] top-[30%] -right-[30%] left-auto
+                    md:w-[500px] md:h-[500px] md:top-[40%] md:left-[30%] md:right-auto" 
+             style="animation-delay: -10s;"></div>
+
+        <!-- Purple Blob (Bottom Right/Left) -->
+        <div class="ambient-blob bg-liquidPurple opacity-50
+                    w-[150vw] h-[150vw] -bottom-[10%] -left-[20%] md:left-auto
+                    md:w-[700px] md:h-[700px] md:-bottom-[20%] md:-right-[10%]" 
+             style="animation-delay: -5s;"></div>
     </div>
 
     <!-- НАВИГАЦИЯ (Парящая капсула) -->
@@ -283,34 +302,34 @@
 
             <div class="grid md:grid-cols-3 gap-8 md:gap-10">
                 <!-- Картка 1 -->
-                <div class="glass-liquid rounded-3xl p-6 md:p-8 group hover:-translate-y-4">
+                <div class="glass-liquid glass-card rounded-3xl p-6 md:p-8 group hover:-translate-y-4">
                     <div class="w-16 h-16 md:w-20 md:h-20 shape-blob glass-liquid mb-6 md:mb-8 flex items-center justify-center bg-liquidCyan/10 border-liquidCyan/30 text-liquidCyan group-hover:scale-110 transition-transform">
                         <svg class="w-8 h-8 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                     </div>
-                    <h3 class="font-display text-xl md:text-2xl font-bold mb-3 md:mb-4 tracking-wide">АВТОНОМНІСТЬ</h3>
-                    <p class="font-sans text-gray-400 text-sm md:text-base leading-relaxed font-light">
+                    <h3 class="font-display text-xl md:text-2xl font-bold mb-3 md:mb-4 tracking-wide text-white">АВТОНОМНІСТЬ</h3>
+                    <p class="font-sans text-gray-200 md:text-gray-400 text-sm md:text-base leading-relaxed md:font-light">
                         Робот самостійно досліджує невідомий лабіринт, обчислює найкоротший шлях та повертається на старт без втручання людини.
                     </p>
                 </div>
 
                 <!-- Картка 2 -->
-                <div class="glass-liquid rounded-3xl p-6 md:p-8 group hover:-translate-y-4 md:mt-12 border-t-liquidPurple/50">
+                <div class="glass-liquid glass-card rounded-3xl p-6 md:p-8 group hover:-translate-y-4 md:mt-12 border-t-liquidPurple/50">
                     <div class="w-16 h-16 md:w-20 md:h-20 shape-blob glass-liquid mb-6 md:mb-8 flex items-center justify-center bg-liquidPurple/10 border-liquidPurple/30 text-liquidPurple group-hover:scale-110 transition-transform">
                         <svg class="w-8 h-8 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"></path></svg>
                     </div>
-                    <h3 class="font-display text-xl md:text-2xl font-bold mb-3 md:mb-4 tracking-wide">3D ВІМIР</h3>
-                    <p class="font-sans text-gray-400 text-sm md:text-base leading-relaxed font-light">
+                    <h3 class="font-display text-xl md:text-2xl font-bold mb-3 md:mb-4 tracking-wide text-white">3D ВІМIР</h3>
+                    <p class="font-sans text-gray-200 md:text-gray-400 text-sm md:text-base leading-relaxed md:font-light">
                         Забудьте про плоскі поверхні. Лабіринт має рампи, мости та перепади висот. Це виклик для сенсорів та алгоритмів балансування.
                     </p>
                 </div>
 
                 <!-- Картка 3 -->
-                <div class="glass-liquid rounded-3xl p-6 md:p-8 group hover:-translate-y-4">
+                <div class="glass-liquid glass-card rounded-3xl p-6 md:p-8 group hover:-translate-y-4">
                     <div class="w-16 h-16 md:w-20 md:h-20 shape-blob glass-liquid mb-6 md:mb-8 flex items-center justify-center bg-liquidMagenta/10 border-liquidMagenta/30 text-liquidMagenta group-hover:scale-110 transition-transform">
                         <svg class="w-8 h-8 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                     </div>
-                    <h3 class="font-display text-xl md:text-2xl font-bold mb-3 md:mb-4 tracking-wide">ШВИДКІСТЬ</h3>
-                    <p class="font-sans text-gray-400 text-sm md:text-base leading-relaxed font-light">
+                    <h3 class="font-display text-xl md:text-2xl font-bold mb-3 md:mb-4 tracking-wide text-white">ШВИДКІСТЬ</h3>
+                    <p class="font-sans text-gray-200 md:text-gray-400 text-sm md:text-base leading-relaxed md:font-light">
                         Після картографування лабіринту робот має проїхати від старту до центру за мінімальний час. Долі секунди вирішують все.
                     </p>
                 </div>
@@ -331,29 +350,29 @@
                     
                     <div class="space-y-4 md:space-y-6">
                         <!-- Елемент списку 1 -->
-                        <div class="glass-liquid rounded-2xl p-5 md:p-6 flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4 md:gap-6 group hover:bg-white/5 transition-colors cursor-default">
+                        <div class="glass-liquid glass-card rounded-2xl p-5 md:p-6 flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4 md:gap-6 group hover:bg-white/5 transition-colors cursor-default">
                             <div class="w-14 h-14 md:w-16 md:h-16 rounded-full glass-liquid flex-shrink-0 flex items-center justify-center text-liquidCyan font-display font-bold text-xl md:text-2xl shadow-[inset_0_0_10px_rgba(0,240,255,0.2)] group-hover:rotate-12 transition-transform">01</div>
                             <div>
                                 <h4 class="font-display text-lg md:text-xl font-bold text-white tracking-wide">СТУДЕНТИ</h4>
-                                <p class="font-sans text-gray-400 mt-1 text-sm md:text-base font-light">Перевір свої знання з програмування та мікроконтролерів на практиці.</p>
+                                <p class="font-sans text-gray-200 md:text-gray-400 mt-1 text-sm md:text-base md:font-light">Перевір свої знання з програмування та мікроконтролерів на практиці.</p>
                             </div>
                         </div>
 
                         <!-- Елемент списку 2 -->
-                        <div class="glass-liquid rounded-2xl p-5 md:p-6 flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4 md:gap-6 group hover:bg-white/5 transition-colors cursor-default border-t sm:border-t-0 sm:border-l-liquidPurple/50">
+                        <div class="glass-liquid glass-card rounded-2xl p-5 md:p-6 flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4 md:gap-6 group hover:bg-white/5 transition-colors cursor-default border-t sm:border-t-0 sm:border-l-liquidPurple/50">
                             <div class="w-14 h-14 md:w-16 md:h-16 rounded-full glass-liquid flex-shrink-0 flex items-center justify-center text-liquidPurple font-display font-bold text-xl md:text-2xl shadow-[inset_0_0_10px_rgba(138,43,226,0.2)] group-hover:rotate-12 transition-transform">02</div>
                             <div>
                                 <h4 class="font-display text-lg md:text-xl font-bold text-white tracking-wide">ШКОЛЯРІ (14+)</h4>
-                                <p class="font-sans text-gray-400 mt-1 text-sm md:text-base font-light">Перший серйозний крок у світ робототехніки та STEM-освіти.</p>
+                                <p class="font-sans text-gray-200 md:text-gray-400 mt-1 text-sm md:text-base md:font-light">Перший серйозний крок у світ робототехніки та STEM-освіти.</p>
                             </div>
                         </div>
 
                         <!-- Елемент списку 3 -->
-                        <div class="glass-liquid rounded-2xl p-5 md:p-6 flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4 md:gap-6 group hover:bg-white/5 transition-colors cursor-default border-t sm:border-t-0 sm:border-l-liquidMagenta/50">
+                        <div class="glass-liquid glass-card rounded-2xl p-5 md:p-6 flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4 md:gap-6 group hover:bg-white/5 transition-colors cursor-default border-t sm:border-t-0 sm:border-l-liquidMagenta/50">
                             <div class="w-14 h-14 md:w-16 md:h-16 rounded-full glass-liquid flex-shrink-0 flex items-center justify-center text-liquidMagenta font-display font-bold text-xl md:text-2xl shadow-[inset_0_0_10px_rgba(255,0,85,0.2)] group-hover:rotate-12 transition-transform">03</div>
                             <div>
                                 <h4 class="font-display text-lg md:text-xl font-bold text-white tracking-wide">МЕЙКЕРИ</h4>
-                                <p class="font-sans text-gray-400 mt-1 text-sm md:text-base font-light">Відкрита ліга для всіх ентузіастів, інженерів та фанатів паяльника.</p>
+                                <p class="font-sans text-gray-200 md:text-gray-400 mt-1 text-sm md:text-base md:font-light">Відкрита ліга для всіх ентузіастів, інженерів та фанатів паяльника.</p>
                             </div>
                         </div>
                     </div>
@@ -381,7 +400,7 @@
                 ПРИЗОВИЙ <span class="text-liquidMagenta text-glow-magenta">ФОНД</span>
             </h2>
 
-            <div class="glass-liquid rounded-3xl md:rounded-[3rem] p-6 sm:p-8 md:p-12 max-w-4xl mx-auto relative overflow-visible border-t-liquidMagenta/40">
+            <div class="glass-liquid glass-card rounded-3xl md:rounded-[3rem] p-6 sm:p-8 md:p-12 max-w-4xl mx-auto relative overflow-visible border-t-liquidMagenta/40">
                 
                 <!-- Плавающая плашка -->
                 <div class="absolute -top-5 md:-top-6 left-1/2 transform -translate-x-1/2 glass-liquid rounded-full px-6 md:px-8 py-2 md:py-3 bg-deepSpace/80 font-display font-bold text-xs md:text-sm tracking-widest text-white border-liquidMagenta/50 shadow-[0_0_20px_rgba(255,0,85,0.3)] whitespace-nowrap">
@@ -396,7 +415,7 @@
                         </div>
                         <div>
                             <h4 class="font-display text-xl md:text-2xl font-bold text-white mb-2">Цінні призи від IT Family</h4>
-                            <p class="font-sans text-gray-400 font-light text-sm md:text-base">Потужні гаджети, компоненти для майбутніх роботів та гранти на навчання.</p>
+                            <p class="font-sans text-gray-200 md:text-gray-400 text-sm md:text-base md:font-light">Потужні гаджети, компоненти для майбутніх роботів та гранти на навчання.</p>
                         </div>
                     </div>
 
@@ -404,7 +423,7 @@
                     <div class="md:hidden w-full h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
 
                     <div class="w-full md:w-auto glass-liquid rounded-2xl p-6 flex flex-col items-center justify-center bg-white/5">
-                        <span class="text-[10px] md:text-xs font-bold tracking-[0.2em] text-gray-500 uppercase mb-4">Головний партнер</span>
+                        <span class="text-[10px] md:text-xs font-bold tracking-[0.2em] text-gray-400 uppercase mb-4">Головний партнер</span>
                         <img src="odesaitfamily_logo.png" alt="Odesa IT Family" class="h-12 md:h-16 object-contain filter grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-500" onerror="this.style.display='none'">
                         <div class="font-display text-base md:text-lg font-bold tracking-widest hidden show-on-error text-white/80">ODESA IT FAMILY</div>
                     </div>
@@ -516,11 +535,9 @@
             }
         }
 
-        // Додаємо обробники подій
         mobileMenuBtn.addEventListener('click', toggleMobileMenu);
         closeMenuBtn.addEventListener('click', toggleMobileMenu);
         
-        // Закривати меню при кліку на будь-яке посилання
         mobileLinks.forEach(link => {
             link.addEventListener('click', toggleMobileMenu);
         });
