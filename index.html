@@ -118,7 +118,7 @@
     <nav class="fixed w-full z-50 top-0 border-b border-white/10 bg-bgDark/80 backdrop-blur-md">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <img src="onu.png" alt="ONU Logo" class="w-10 h-10 object-contain">
+                <img src="onu.png" alt="ONU Logo" class="w-10 h-10 object-contain" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj48Y2lyY2xlIGN4PSIyMCIgY3k9IjIwIiByPSIyMCIgZmlsbD0iIzMzMyIvPjwvc3ZnPg=='">
                 <span class="font-cyber text-xl tracking-wider text-white">ODESA-<span
                         class="text-neonCyan">MICROMOUSE</span></span>
             </div>
@@ -129,7 +129,7 @@
                 <a href="#register"
                     class="px-6 py-2 rounded-full border border-neonCyan text-neonCyan hover:bg-neonCyan hover:text-bgDark transition-all shadow-neon-cyan duration-300">РЕЄСТРАЦІЯ</a>
             </div>
-            <button class="md:hidden text-white">
+            <button class="md:hidden text-white" aria-label="Menu">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
                     </path>
@@ -178,7 +178,7 @@
                 <div
                     class="glass-panel p-2 rounded-2xl w-full max-w-md aspect-square relative overflow-hidden border-t border-neonCyan/50">
                     <div class="w-full h-full bg-black rounded-xl flex items-center justify-center overflow-hidden">
-                        <img src="banner.png" alt="Micromouse Banner" class="w-full h-full object-cover opacity-80">
+                        <img src="banner.png" alt="Micromouse Banner" class="w-full h-full object-cover opacity-80" onerror="this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=800'">
 
                         <div
                             class="absolute bottom-6 left-6 right-6 glass-panel p-4 rounded-lg text-center border-l-4 border-neonPurple backdrop-blur-md">
@@ -336,7 +336,6 @@
                             </div>
                             <div>
                                 <h4 class="text-xl font-bold text-white">Цінні призи від партнерів</h4>
-                                <!-- <p class="text-sm text-gray-400">Гаджети, дев-кіти та мерч</p> -->
                             </div>
                         </div>
                     </div>
@@ -344,32 +343,39 @@
                     <div class="border-l border-white/10 pl-0 md:pl-8 flex flex-col items-center justify-center">
                         <p class="text-gray-400 mb-4 text-sm uppercase tracking-widest">Головний партнер</p>
                         <img src="odesaitfamily_logo.png" alt="Odesa IT Family"
-                            class="h-24 object-contain filter drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">
+                            class="h-24 object-contain filter drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]" onerror="this.style.display='none'">
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="register" class="py-20">
+    <!-- Оновлена секція реєстрації з Google Form -->
+    <section id="register" class="py-20 relative">
         <div class="container mx-auto px-6 text-center">
-            <h2 class="text-3xl font-bold mb-8">Готовий прийняти виклик?</h2>
-            <form action="https://formsubmit.co/micromouseonu@gmail.com" method="POST"
-                class="max-w-md mx-auto space-y-4">
-
-                <input type="hidden" name="_captcha" value="false">
-                <input type="hidden" name="_subject" value="Новая заявка на Micromouse!">
-                <input type="text" name="_honey" style="display:none">
-                <input type="hidden" name="_next" value="https://odesa-micromouse.github.io/thanks.html">
-                <input type="email" name="email" required placeholder="Ваш Email"
-                    class="w-full px-6 py-4 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-neonCyan transition-colors">
-
-                <button type="submit"
-                    class="w-full px-8 py-4 bg-gradient-to-r from-neonCyan to-blue-500 text-bgDark font-bold text-lg rounded-lg hover:shadow-neon-cyan transition-all duration-300 transform hover:-translate-y-1">
-                    ЗАРЕЄСТРУВАТИСЯ ЗАРАЗ
-                </button>
-            </form>
-            <p class="mt-4 text-gray-500 text-sm">Кількість місць обмежена.</p>
+            <h2 class="font-cyber text-3xl md:text-5xl font-bold mb-8">Готовий прийняти <span class="text-neonCyan">виклик?</span></h2>
+            
+            <div class="max-w-4xl mx-auto glass-panel p-2 md:p-6 rounded-2xl border border-neonCyan/30 shadow-neon-cyan relative overflow-hidden bg-white/5">
+                <div class="w-full h-[800px] rounded-xl overflow-hidden relative">
+                    <!-- Анімація завантаження -->
+                    <div class="absolute inset-0 flex items-center justify-center -z-10">
+                        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-neonCyan"></div>
+                    </div>
+                    
+                    <!-- Google Form iframe -->
+                    <iframe 
+                        src="https://docs.google.com/forms/d/e/1FAIpQLSf2l-ghWnnavQ_-STNJUR1PxdPP6mSo4o0dwiVKZSPjS_KQSw/viewform?embedded=true" 
+                        width="100%" 
+                        height="100%" 
+                        frameborder="0" 
+                        marginheight="0" 
+                        marginwidth="0"
+                        class="relative z-10 w-full h-full bg-white/95 rounded-lg"
+                    >Завантаження…</iframe>
+                </div>
+            </div>
+            
+            <p class="mt-6 text-gray-500 text-sm">Кількість місць обмежена. Заповніть форму вище для участі.</p>
         </div>
     </section>
 
@@ -377,7 +383,7 @@
         <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
             <div class="text-center md:text-left">
                 <img src="onu-mfit.png" alt="ONU MFIT"
-                    class="h-16 mb-4 opacity-80 hover:opacity-100 transition-opacity">
+                    class="h-16 mb-4 opacity-80 hover:opacity-100 transition-opacity" onerror="this.style.display='none'">
                 <div class="font-cyber text-lg font-bold text-white mb-2">MICROMOUSE<span
                         class="text-neonPurple">.ODS</span></div>
                 <p class="text-gray-500 text-sm">Одеський національний університет ім. І.І. Мечникова</p>
