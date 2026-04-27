@@ -27,6 +27,15 @@
                         sans: ['Montserrat', 'sans-serif'],
                         display: ['Orbitron', 'sans-serif'],
                     },
+                    animation: {
+                        'fade-in': 'fadeIn 0.4s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
                 }
             }
         }
@@ -44,13 +53,19 @@
 
         /* Кастомный скроллбар */
         ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #040914; }
+        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 10px; }
         ::-webkit-scrollbar-thumb { 
-            background: rgba(255, 255, 255, 0.2); 
+            background: rgba(255, 255, 255, 0.15); 
             border-radius: 10px; 
             backdrop-filter: blur(10px);
         }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(0, 240, 255, 0.5); }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(0, 240, 255, 0.4); }
+
+        /* Кастомний скрол для блоку з текстом */
+        .text-scrollbar::-webkit-scrollbar { width: 6px; }
+        .text-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .text-scrollbar::-webkit-scrollbar-thumb { background: rgba(0, 240, 255, 0.3); border-radius: 10px; }
+        .text-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(0, 240, 255, 0.6); }
 
         /* --- LIQUID АНИМАЦИИ --- */
         @keyframes liquidMorph {
@@ -84,7 +99,6 @@
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Внутренний блик для стекла */
         .glass-liquid::after {
             content: '';
             position: absolute;
@@ -103,19 +117,16 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 240, 255, 0.2);
         }
 
-        /* Затемнене скло для карток (ТІЛЬКИ ДЛЯ МОБІЛЬНИХ) */
         @media (max-width: 767px) {
             .glass-card {
                 background: linear-gradient(135deg, rgba(4, 9, 20, 0.75) 0%, rgba(4, 9, 20, 0.4) 100%) !important;
             }
         }
 
-        /* Формы, похожие на каплю */
         .shape-blob {
             animation: liquidMorph 12s ease-in-out infinite, liquidFloat 6s ease-in-out infinite;
         }
 
-        /* Светящийся текст */
         .text-glow-cyan {
             text-shadow: 0 0 15px rgba(0, 240, 255, 0.6);
         }
@@ -137,30 +148,6 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* --- ИНВЕРСИЯ ЦВЕТА НАВИГАЦИИ (ПОВЕРХ БЕЛОГО ФОНА) --- */
-        .nav-light-mode .glass-liquid {
-            background: rgba(255, 255, 255, 0.8) !important;
-            border-color: rgba(0, 0, 0, 0.15) !important;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05), inset 0 0 15px rgba(255, 255, 255, 0.5) !important;
-        }
-        .nav-light-mode .nav-text-color {
-            color: #040914 !important;
-            font-weight: 700;
-        }
-        .nav-light-mode .nav-cyan-text {
-            color: #0077ff !important;
-            text-shadow: none !important;
-        }
-        .nav-light-mode .nav-circle, 
-        .nav-light-mode .nav-btn {
-            background-color: rgba(0, 0, 0, 0.05) !important;
-            border-color: rgba(0, 0, 0, 0.2) !important;
-        }
-        .nav-light-mode .nav-btn:hover {
-            border-color: #0077ff !important;
-        }
-
-        /* Фоновые размытые пятна */
         .ambient-blob {
             position: absolute;
             filter: blur(90px);
@@ -169,59 +156,54 @@
             border-radius: 50%;
             animation: blobMove 15s infinite alternate ease-in-out;
         }
+
+        select option {
+            background-color: #040914;
+            color: #ffffff;
+        }
+        
+        .form-step {
+            display: none;
+        }
+        .form-step.active {
+            display: block;
+        }
     </style>
 </head>
 
 <body class="selection:bg-liquidCyan/30 selection:text-white">
 
-    <!-- ФОНОВЫЕ "ЖИДКИЕ" ПЯТНА (Адаптированы под мобильные) -->
+    <!-- ФОНОВЫЕ "ЖИДКИЕ" ПЯТНА -->
     <div class="fixed inset-0 pointer-events-none z-[-1] overflow-hidden">
-        <!-- Cyan Blob (Top Left) -->
-        <div class="ambient-blob bg-liquidCyan opacity-50
-                    w-[120vw] h-[120vw] -top-[10%] -left-[20%] 
-                    md:w-[600px] md:h-[600px] md:top-[-10%] md:left-[-10%]"></div>
-        
-        <!-- Magenta Blob (Middle Right) -->
-        <div class="ambient-blob bg-liquidMagenta opacity-40 md:opacity-30
-                    w-[100vw] h-[100vw] top-[30%] -right-[30%] left-auto
-                    md:w-[500px] md:h-[500px] md:top-[40%] md:left-[30%] md:right-auto" 
-             style="animation-delay: -10s;"></div>
-
-        <!-- Purple Blob (Bottom Right/Left) -->
-        <div class="ambient-blob bg-liquidPurple opacity-50
-                    w-[150vw] h-[150vw] -bottom-[10%] -left-[20%] md:left-auto
-                    md:w-[700px] md:h-[700px] md:-bottom-[20%] md:-right-[10%]" 
-             style="animation-delay: -5s;"></div>
+        <div class="ambient-blob bg-liquidCyan opacity-50 w-[120vw] h-[120vw] -top-[10%] -left-[20%] md:w-[600px] md:h-[600px] md:top-[-10%] md:left-[-10%]"></div>
+        <div class="ambient-blob bg-liquidMagenta opacity-40 md:opacity-30 w-[100vw] h-[100vw] top-[30%] -right-[30%] left-auto md:w-[500px] md:h-[500px] md:top-[40%] md:left-[30%] md:right-auto" style="animation-delay: -10s;"></div>
+        <div class="ambient-blob bg-liquidPurple opacity-50 w-[150vw] h-[150vw] -bottom-[10%] -left-[20%] md:left-auto md:w-[700px] md:h-[700px] md:-bottom-[20%] md:-right-[10%]" style="animation-delay: -5s;"></div>
     </div>
 
-    <!-- НАВИГАЦИЯ (Парящая капсула) -->
+    <!-- НАВИГАЦИЯ -->
     <nav id="main-nav" class="fixed w-full z-50 top-4 md:top-6 px-4 flex justify-center pointer-events-none transition-all duration-300">
         <div class="glass-liquid rounded-full px-4 md:px-6 py-3 flex items-center justify-between gap-4 md:gap-16 pointer-events-auto w-full max-w-5xl transition-all duration-300">
-            <!-- Логотип -->
             <div class="flex items-center gap-3">
-                <div class="nav-circle w-10 h-10 rounded-full bg-white/10 flex items-center justify-center backdrop-blur-md border border-white/20 shadow-[0_0_15px_rgba(0,240,255,0.4)] transition-colors duration-300">
+                <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center backdrop-blur-md border border-white/20 shadow-[0_0_15px_rgba(0,240,255,0.4)] transition-colors duration-300">
                     <img src="onu.png" alt="ONU Logo" class="w-6 h-6 object-contain" onerror="this.style.display='none'">
                 </div>
-                <span class="nav-text-color font-display font-bold text-base md:text-lg tracking-widest text-white transition-colors duration-300">
-                    ODS<span class="nav-cyan-text text-liquidCyan text-glow-cyan transition-colors duration-300">.MOUSE</span>
+                <span class="font-display font-bold text-base md:text-lg tracking-widest text-white transition-colors duration-300">
+                    ODS<span class="text-liquidCyan text-glow-cyan transition-colors duration-300">.MOUSE</span>
                 </span>
             </div>
 
-            <!-- Десктопное меню -->
             <div class="hidden md:flex items-center gap-8 font-sans font-medium text-sm tracking-widest">
-                <a href="#about" class="nav-text-color text-gray-200 hover:text-liquidCyan transition-colors duration-300">ПРО ПОДІЮ</a>
-                <a href="#participants" class="nav-text-color text-gray-200 hover:text-liquidCyan transition-colors duration-300">УЧАСНИКИ</a>
-                <a href="#prizes" class="nav-text-color text-gray-200 hover:text-liquidMagenta transition-colors duration-300">ПРИЗИ</a>
+                <a href="#about" class="text-gray-200 hover:text-liquidCyan transition-colors duration-300">ПРО ПОДІЮ</a>
+                <a href="#participants" class="text-gray-200 hover:text-liquidCyan transition-colors duration-300">УЧАСНИКИ</a>
+                <a href="#prizes" class="text-gray-200 hover:text-liquidMagenta transition-colors duration-300">ПРИЗИ</a>
             </div>
 
-            <!-- Десктопная кнопка регистрации -->
-            <a href="#register" class="nav-btn hidden md:inline-flex relative items-center justify-center px-6 py-2 overflow-hidden font-bold rounded-full group bg-white/10 border border-white/20 hover:border-liquidCyan transition-all duration-300">
+            <a href="#register" class="hidden md:inline-flex relative items-center justify-center px-6 py-2 overflow-hidden font-bold rounded-full group bg-white/10 border border-white/20 hover:border-liquidCyan transition-all duration-300">
                 <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-liquidCyan rounded-full group-hover:w-56 group-hover:h-56 opacity-20"></span>
-                <span class="nav-text-color relative text-sm tracking-wider group-hover:text-liquidCyan transition-colors duration-300 text-white">РЕЄСТРАЦІЯ</span>
+                <span class="relative text-sm tracking-wider group-hover:text-liquidCyan transition-colors duration-300 text-white">РЕЄСТРАЦІЯ</span>
             </a>
 
-            <!-- Кнопка мобильного меню (Гамбургер) -->
-            <button id="mobile-menu-btn" class="nav-text-color md:hidden text-white hover:text-liquidCyan transition-colors duration-300 p-2 focus:outline-none">
+            <button id="mobile-menu-btn" class="md:hidden text-white hover:text-liquidCyan transition-colors duration-300 p-2 focus:outline-none">
                 <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
@@ -229,9 +211,8 @@
         </div>
     </nav>
 
-    <!-- МОБИЛЬНОЕ МЕНЮ (Полноэкранный оверлей) -->
+    <!-- МОБИЛЬНОЕ МЕНЮ -->
     <div id="mobile-menu" class="fixed inset-0 z-[100] opacity-0 pointer-events-none transition-opacity duration-500 ease-in-out flex flex-col justify-center items-center gap-10 text-2xl font-display tracking-widest overflow-hidden bg-deepSpace/95 backdrop-blur-3xl">
-        <!-- Декоративные мобильные пятна -->
         <div class="absolute top-0 right-0 w-[300px] h-[300px] bg-liquidCyan/20 blur-[80px] rounded-full pointer-events-none"></div>
         <div class="absolute bottom-0 left-0 w-[300px] h-[300px] bg-liquidPurple/20 blur-[80px] rounded-full pointer-events-none"></div>
 
@@ -245,25 +226,20 @@
         </button>
     </div>
 
-    <!-- ГОЛОВНИЙ ЕКРАН (HERO) -->
+    <!-- ГОЛОВНИЙ ЕКРАН -->
     <header class="relative min-h-screen flex items-center justify-center pt-32 lg:pt-40 pb-16 overflow-hidden">
         <div class="container mx-auto px-6 grid lg:grid-cols-2 gap-12 md:gap-16 items-center relative z-10 mt-6 md:mt-0">
-            
-            <!-- Текст -->
             <div class="space-y-6 md:space-y-8 text-center lg:text-left">
                 <div class="inline-block glass-liquid rounded-full px-5 py-2">
                     <span class="text-xs font-bold tracking-[0.3em] uppercase text-liquidCyan text-glow-cyan">Вперше в Україні</span>
                 </div>
-                
                 <h1 class="font-display text-4xl sm:text-6xl lg:text-8xl font-black leading-tight sm:leading-none drop-shadow-2xl">
                     <span class="block text-white mb-2 opacity-90">MICROMOUSE</span>
                     <span class="gradient-text leading-normal">3D ЗМАГАННЯ</span>
                 </h1>
-                
                 <p class="font-sans text-base sm:text-lg md:text-xl font-light text-gray-300 max-w-lg mx-auto lg:mx-0 leading-relaxed">
                     Алгоритми, сенсори та швидкість. Проведи свого робота крізь <span class="font-medium text-white">тривимірний лабіринт</span> та доведи свою майстерність.
                 </p>
-
                 <div class="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start pt-4">
                     <a href="#register" class="glass-liquid rounded-2xl px-8 sm:px-10 py-4 font-display font-bold tracking-widest text-base sm:text-lg bg-liquidCyan/10 hover:bg-liquidCyan/20 text-white flex items-center justify-center gap-3 group">
                         ВЗЯТИ УЧАСТЬ
@@ -272,17 +248,13 @@
                 </div>
             </div>
 
-            <!-- Жидкая форма с изображением -->
             <div class="relative flex justify-center items-center h-[350px] sm:h-[400px] lg:h-[500px]">
-                <!-- Анимированная жидкая рамка -->
                 <div class="absolute w-[90%] sm:w-[80%] h-[90%] sm:h-[80%] glass-liquid shape-blob bg-white/5 border-2 border-liquidCyan/40 backdrop-blur-3xl shadow-[0_0_50px_rgba(0,240,255,0.2)] z-10 flex items-center justify-center p-2">
                     <div class="w-full h-full shape-blob overflow-hidden relative">
                         <img src="banner.png" alt="3D Maze Robot" class="w-full h-full object-cover opacity-80 mix-blend-screen" onerror="this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=800'">
                         <div class="absolute inset-0 bg-gradient-to-t from-deepSpace via-transparent to-transparent"></div>
                     </div>
                 </div>
-
-                <!-- Декоративные плавающие элементы -->
                 <div class="absolute top-4 right-4 sm:top-10 sm:right-10 w-16 h-16 sm:w-20 sm:h-20 glass-liquid rounded-full shape-blob flex items-center justify-center bg-liquidMagenta/10 border-liquidMagenta/30 animate-[liquidFloat_4s_ease-in-out_infinite_reverse] z-20">
                     <span class="font-display font-bold text-liquidMagenta text-sm sm:text-base">2026</span>
                 </div>
@@ -299,9 +271,7 @@
             <h2 class="font-display text-3xl sm:text-4xl md:text-5xl font-black text-center mb-12 md:mb-20">
                 ЩО ТАКЕ <span class="text-liquidCyan text-glow-cyan">MICROMOUSE?</span>
             </h2>
-
             <div class="grid md:grid-cols-3 gap-8 md:gap-10">
-                <!-- Картка 1 -->
                 <div class="glass-liquid glass-card rounded-3xl p-6 md:p-8 group hover:-translate-y-4">
                     <div class="w-16 h-16 md:w-20 md:h-20 shape-blob glass-liquid mb-6 md:mb-8 flex items-center justify-center bg-liquidCyan/10 border-liquidCyan/30 text-liquidCyan group-hover:scale-110 transition-transform">
                         <svg class="w-8 h-8 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
@@ -311,8 +281,6 @@
                         Робот самостійно досліджує невідомий лабіринт, обчислює найкоротший шлях та повертається на старт без втручання людини.
                     </p>
                 </div>
-
-                <!-- Картка 2 -->
                 <div class="glass-liquid glass-card rounded-3xl p-6 md:p-8 group hover:-translate-y-4 md:mt-12 border-t-liquidPurple/50">
                     <div class="w-16 h-16 md:w-20 md:h-20 shape-blob glass-liquid mb-6 md:mb-8 flex items-center justify-center bg-liquidPurple/10 border-liquidPurple/30 text-liquidPurple group-hover:scale-110 transition-transform">
                         <svg class="w-8 h-8 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"></path></svg>
@@ -322,8 +290,6 @@
                         Забудьте про плоскі поверхні. Лабіринт має рампи, мости та перепади висот. Це виклик для сенсорів та алгоритмів балансування.
                     </p>
                 </div>
-
-                <!-- Картка 3 -->
                 <div class="glass-liquid glass-card rounded-3xl p-6 md:p-8 group hover:-translate-y-4">
                     <div class="w-16 h-16 md:w-20 md:h-20 shape-blob glass-liquid mb-6 md:mb-8 flex items-center justify-center bg-liquidMagenta/10 border-liquidMagenta/30 text-liquidMagenta group-hover:scale-110 transition-transform">
                         <svg class="w-8 h-8 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
@@ -341,15 +307,12 @@
     <section id="participants" class="py-20 md:py-32 relative z-10 bg-white/[0.02] border-y border-white/5 backdrop-blur-sm">
         <div class="container mx-auto px-6">
             <div class="flex flex-col lg:flex-row gap-12 md:gap-16 items-center">
-                
                 <div class="w-full lg:w-1/2 order-2 lg:order-1">
                     <h2 class="font-display text-3xl sm:text-4xl md:text-5xl font-black mb-8 leading-tight text-center lg:text-left">
                         ДЛЯ КОГО ЦЕЙ <br>
-                        <span class="gradient-text">ВИТВІР ІНЖЕНЕРІЇ?</span>
+                        <span class="gradient-text">ЗАХІД ІНЖЕНЕРІЇ?</span>
                     </h2>
-                    
                     <div class="space-y-4 md:space-y-6">
-                        <!-- Елемент списку 1 -->
                         <div class="glass-liquid glass-card rounded-2xl p-5 md:p-6 flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4 md:gap-6 group hover:bg-white/5 transition-colors cursor-default">
                             <div class="w-14 h-14 md:w-16 md:h-16 rounded-full glass-liquid flex-shrink-0 flex items-center justify-center text-liquidCyan font-display font-bold text-xl md:text-2xl shadow-[inset_0_0_10px_rgba(0,240,255,0.2)] group-hover:rotate-12 transition-transform">01</div>
                             <div>
@@ -357,8 +320,6 @@
                                 <p class="font-sans text-gray-200 md:text-gray-400 mt-1 text-sm md:text-base md:font-light">Перевір свої знання з програмування та мікроконтролерів на практиці.</p>
                             </div>
                         </div>
-
-                        <!-- Елемент списку 2 -->
                         <div class="glass-liquid glass-card rounded-2xl p-5 md:p-6 flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4 md:gap-6 group hover:bg-white/5 transition-colors cursor-default border-t sm:border-t-0 sm:border-l-liquidPurple/50">
                             <div class="w-14 h-14 md:w-16 md:h-16 rounded-full glass-liquid flex-shrink-0 flex items-center justify-center text-liquidPurple font-display font-bold text-xl md:text-2xl shadow-[inset_0_0_10px_rgba(138,43,226,0.2)] group-hover:rotate-12 transition-transform">02</div>
                             <div>
@@ -366,8 +327,6 @@
                                 <p class="font-sans text-gray-200 md:text-gray-400 mt-1 text-sm md:text-base md:font-light">Перший серйозний крок у світ робототехніки та STEM-освіти.</p>
                             </div>
                         </div>
-
-                        <!-- Елемент списку 3 -->
                         <div class="glass-liquid glass-card rounded-2xl p-5 md:p-6 flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4 md:gap-6 group hover:bg-white/5 transition-colors cursor-default border-t sm:border-t-0 sm:border-l-liquidMagenta/50">
                             <div class="w-14 h-14 md:w-16 md:h-16 rounded-full glass-liquid flex-shrink-0 flex items-center justify-center text-liquidMagenta font-display font-bold text-xl md:text-2xl shadow-[inset_0_0_10px_rgba(255,0,85,0.2)] group-hover:rotate-12 transition-transform">03</div>
                             <div>
@@ -377,9 +336,7 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="w-full lg:w-1/2 order-1 lg:order-2 relative">
-                    <!-- Декоративне рідке вікно -->
                     <div class="aspect-square w-full max-w-sm md:max-w-md mx-auto shape-blob glass-liquid p-3 border-liquidPurple/30 bg-white/5">
                         <div class="w-full h-full shape-blob overflow-hidden relative">
                             <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=1000" alt="Tech" class="w-full h-full object-cover mix-blend-luminosity opacity-60 hover:mix-blend-normal hover:scale-110 hover:opacity-100 transition-all duration-700">
@@ -387,7 +344,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
@@ -395,20 +351,14 @@
     <!-- СЕКЦИЯ "ПРИЗИ" -->
     <section id="prizes" class="py-20 md:py-32 relative z-10">
         <div class="container mx-auto px-6 text-center">
-            
             <h2 class="font-display text-3xl sm:text-4xl md:text-5xl font-black mb-12 md:mb-16">
                 ПРИЗОВИЙ <span class="text-liquidMagenta text-glow-magenta">ФОНД</span>
             </h2>
-
             <div class="glass-liquid glass-card rounded-3xl md:rounded-[3rem] p-6 sm:p-8 md:p-12 max-w-4xl mx-auto relative overflow-visible border-t-liquidMagenta/40">
-                
-                <!-- Плавающая плашка -->
                 <div class="absolute -top-5 md:-top-6 left-1/2 transform -translate-x-1/2 glass-liquid rounded-full px-6 md:px-8 py-2 md:py-3 bg-deepSpace/80 font-display font-bold text-xs md:text-sm tracking-widest text-white border-liquidMagenta/50 shadow-[0_0_20px_rgba(255,0,85,0.3)] whitespace-nowrap">
                     НАГОРОДИ ПЕРЕМОЖЦЯМ
                 </div>
-
                 <div class="flex flex-col md:flex-row gap-8 md:gap-12 items-center justify-between pt-6">
-                    
                     <div class="flex-1 text-center md:text-left flex flex-col md:flex-row gap-4 md:gap-6 items-center">
                         <div class="w-16 h-16 md:w-20 md:h-20 shape-blob glass-liquid flex-shrink-0 flex items-center justify-center bg-white/5 border-white/20 text-yellow-400">
                             <svg class="w-8 h-8 md:w-10 md:h-10 drop-shadow-[0_0_10px_rgba(250,204,21,0.5)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
@@ -418,25 +368,21 @@
                             <p class="font-sans text-gray-200 md:text-gray-400 text-sm md:text-base md:font-light">Потужні гаджети, компоненти для майбутніх роботів та гранти на навчання.</p>
                         </div>
                     </div>
-
                     <div class="hidden md:block w-px h-32 bg-gradient-to-b from-transparent via-white/20 to-transparent"></div>
                     <div class="md:hidden w-full h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-
                     <div class="w-full md:w-auto glass-liquid rounded-2xl p-6 flex flex-col items-center justify-center bg-white/5">
                         <span class="text-[10px] md:text-xs font-bold tracking-[0.2em] text-gray-400 uppercase mb-4">Головний партнер</span>
                         <img src="odesaitfamily_logo.png" alt="Odesa IT Family" class="h-12 md:h-16 object-contain filter grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-500" onerror="this.style.display='none'">
                         <div class="font-display text-base md:text-lg font-bold tracking-widest hidden show-on-error text-white/80">ODESA IT FAMILY</div>
                     </div>
-
                 </div>
             </div>
-
         </div>
     </section>
 
-    <!-- СЕКЦИЯ РЕГИСТРАЦИИ (Форма внутри жидкого стекла) -->
+    <!-- СЕКЦИЯ РЕГИСТРАЦИИ (Кастомная многошаговая форма) -->
     <section id="register" class="py-20 md:py-32 relative z-10">
-        <div class="container mx-auto px-4 md:px-6 max-w-5xl">
+        <div class="container mx-auto px-4 md:px-6 max-w-3xl">
             
             <div class="text-center mb-10 md:mb-12">
                 <h2 class="font-display text-3xl sm:text-4xl md:text-5xl font-black mb-3 md:mb-4">
@@ -445,35 +391,221 @@
                 <p class="font-sans text-liquidCyan tracking-widest uppercase text-xs md:text-sm font-bold">Реєстрація на подію</p>
             </div>
 
-            <!-- Контейнер формы-планшета -->
-            <div class="glass-liquid rounded-3xl md:rounded-[2.5rem] p-3 sm:p-6 md:p-8 bg-deepSpace/40 border-liquidCyan/30 shadow-[0_20px_50px_rgba(0,240,255,0.1)] relative">
+            <!-- Контейнер формы -->
+            <div id="form-container" class="glass-liquid rounded-3xl md:rounded-[2.5rem] p-6 sm:p-10 md:p-12 bg-deepSpace/60 border-liquidCyan/30 shadow-[0_20px_50px_rgba(0,240,255,0.1)] relative flex flex-col min-h-[500px]">
                 
-                <!-- Декор планшета -->
-                <div class="w-full flex justify-center gap-2 md:gap-3 mb-4 md:mb-6">
-                    <div class="w-2 h-2 md:w-3 md:h-3 rounded-full glass-liquid border-white/20 bg-liquidMagenta/50"></div>
-                    <div class="w-16 h-2 md:w-24 md:h-3 rounded-full glass-liquid border-white/20 bg-white/10"></div>
+                <!-- Прихований фрейм для перехоплення відповіді Google Форми -->
+                <iframe name="hidden_iframe" id="hidden_iframe" class="hidden"></iframe>
+
+                <!-- Повідомлення про успішну реєстрацію -->
+                <div id="success_msg" class="hidden flex-col items-center justify-center py-10 md:py-20 text-center animate-[liquidFloat_4s_ease-in-out_infinite] m-auto">
+                    <div class="w-20 h-20 mb-6 rounded-full glass-liquid flex items-center justify-center bg-liquidCyan/20 border-liquidCyan/50 text-liquidCyan shadow-[0_0_30px_rgba(0,240,255,0.4)]">
+                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    </div>
+                    <h3 class="font-display text-2xl md:text-3xl font-bold text-white mb-2">ДЯКУЄМО ЗА РЕЄСТРАЦІЮ!</h3>
+                    <p class="font-sans text-gray-400">Ваша заявка успішно надіслана. Очікуйте деталі на вказаний email.</p>
                 </div>
 
-                <div id="form-container" class="w-full h-[600px] md:h-[700px] rounded-2xl md:rounded-[1.5rem] overflow-hidden relative bg-[#f8f9fa]">
+                <!-- Багатошагова форма -->
+                <form id="custom_form" action="https://docs.google.com/forms/u/1/d/e/1FAIpQLSf2l-ghWnnavQ_-STNJUR1PxdPP6mSo4o0dwiVKZSPjS_KQSw/formResponse?pli=1" method="POST" target="hidden_iframe" onsubmit="prepareSubmit(event)" class="relative z-20 flex flex-col flex-grow justify-between">
                     
-                    <!-- Лоадер внутри формы -->
-                    <div class="absolute inset-0 flex flex-col items-center justify-center bg-deepSpace/90 backdrop-blur-lg z-0">
-                        <div class="w-16 h-16 md:w-20 md:h-20 border-2 border-white/10 border-t-liquidCyan border-r-liquidPurple rounded-full animate-spin"></div>
-                        <span class="mt-4 md:mt-6 font-display text-xs md:text-sm tracking-[0.3em] text-white animate-pulse">СИНХРОНІЗАЦІЯ...</span>
+                    <input type="hidden" name="fvv" value="1">
+                    <input type="hidden" name="fbzx" value="6805073827137308082">
+                    <!-- pageHistory динамічно оновлюється в JS -->
+                    <input type="hidden" name="pageHistory" value="0,1,2,3,4,5,6,7">
+
+                    <!-- БЛОК ДЛЯ КРОКІВ ФОРМИ (щоб завжди відштовхував кнопки вниз) -->
+                    <div class="flex-grow">
+
+                        <!-- КРОК 0: Інформація про змагання -->
+                        <div id="step_intro" class="form-step active animate-fade-in">
+                            <div class="text-scrollbar pr-4 max-h-[55vh] md:max-h-[60vh] overflow-y-auto font-sans text-gray-300 text-sm md:text-base leading-relaxed">
+                                
+                                <!-- Блок Студенти -->
+                                <div class="mb-8">
+                                    <h3 class="font-display font-bold text-liquidCyan text-xl md:text-2xl mb-4">Змагання для студентів: <br><span class="text-white">3D-Лабіринт</span></h3>
+                                    <p class="mb-4">Студенти повинні представити робота, який самостійно знайде шлях до центру лабіринту.</p>
+                                    
+                                    <h4 class="font-bold text-white mb-1">Етап підготовки та перевірки:</h4>
+                                    <p class="mb-4 text-gray-400">Перед початком кожного заїзду судді перевіряють габарити робота. Він має вільно рухатися у коридорах шириною 170 мм. Будь-яке дистанційне керування (Bluetooth, Wi-Fi тощо) має бути вимкнено - робот повинен діяти виключно за власним алгоритмом.</p>
+
+                                    <h4 class="font-bold text-white mb-1">Логіка проходження:</h4>
+                                    <p class="mb-4 text-gray-400">Лабіринт складається з сітки 16x16 одиничних квадратів. Оскільки прості алгоритми (наприклад, "рух вздовж лівої стіни") спеціально заблоковані конфігурацією лабіринту, робот повинен мати в пам'яті алгоритм побудови карти (наприклад, Flood Fill).</p>
+
+                                    <h4 class="font-bold text-white mb-1">Часовий регламент:</h4>
+                                    <p class="mb-4 text-gray-400">Кожній команді надається 10 хвилин. За цей час робот може робити кілька спроб. Таймер не зупиняється між заїздами. Мета - зафіксувати найшвидший чистий час пробігу від стартового кута до центральної зони.</p>
+
+                                    <h4 class="font-bold text-white mb-1">Штрафні бали:</h4>
+                                    <p class="text-gray-400">Робот не має торкатися стін. Кожне зіткнення, яке помітить суддя, додає 0,5 секунди до фінального часу.</p>
+                                </div>
+
+                                <div class="w-full h-px bg-gradient-to-r from-liquidCyan/50 to-liquidPurple/50 my-8"></div>
+
+                                <!-- Блок Школярі -->
+                                <div>
+                                    <h3 class="font-display font-bold text-liquidPurple text-xl md:text-2xl mb-4">Змагання для школярів: <br><span class="text-white">Швидкісна траса</span></h3>
+                                    <p class="mb-4">Це змагання на точність та швидкість реакції сенсорів. Роботи повинні максимально швидко подолати кільцеву дистанцію, орієнтуючись за чорною лінією.</p>
+
+                                    <h4 class="font-bold text-white mb-1">Технічний контроль:</h4>
+                                    <p class="mb-4 text-gray-400">Робот має бути компактним (до 25х25 см) та важити не більше 1,5 кг. Судді перевіряють безпеку конструкції: відсутність гострих частин, токсичних матеріалів та джерел горіння.</p>
+
+                                    <h4 class="font-bold text-white mb-1">Процес змагань:</h4>
+                                    <p class="mb-2 text-gray-400">Змагання проходять у три раунди.</p>
+                                    <ul class="list-disc pl-5 mb-4 text-gray-400 space-y-1">
+                                        <li>Перший раунд: рух за годинниковою стрілкою.</li>
+                                        <li>Другий раунд: рух проти годинникової стрілки.</li>
+                                        <li>Третій раунд: напрямок обирає сама команда.</li>
+                                    </ul>
+                                    <p class="mb-4 text-gray-400">Такий підхід дозволяє перевірити універсальність налаштувань датчиків.</p>
+
+                                    <h4 class="font-bold text-white mb-1">Умови дискваліфікації:</h4>
+                                    <p class="mb-4 text-gray-400">Якщо робот повністю втрачає лінію (жодна частина його корпусу не знаходиться над трасою), спроба вважається невдалою. Учасникам заборонено торкатися робота руками після старту.</p>
+
+                                    <h4 class="font-bold text-white mb-1">Визначення переможців:</h4>
+                                    <p class="mb-2 text-gray-400">До заліку йде найкращий час з усіх успішних раундів. Тривалість однієї спроби обмежена 180 секундами.</p>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- КРОК 1: ПІБ та Роль -->
+                        <div id="step_role" class="form-step animate-fade-in">
+                            <div class="space-y-6">
+                                <div>
+                                    <label class="block font-display text-xs font-bold tracking-wider text-gray-300 mb-2 uppercase">Прізвище, імʼя, по-батькові <span class="text-liquidMagenta">*</span></label>
+                                    <input type="text" name="entry.895318726" data-required="true" class="w-full bg-[#0a1128]/80 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-liquidCyan focus:ring-1 focus:ring-liquidCyan/50 transition-all font-sans text-sm">
+                                </div>
+                                <div>
+                                    <label class="block font-display text-xs font-bold tracking-wider text-gray-300 mb-2 uppercase">Ваша роль у команді <span class="text-liquidMagenta">*</span></label>
+                                    <select id="role_select" name="entry.1408407497" data-required="true" class="w-full bg-[#0a1128]/80 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-liquidCyan focus:ring-1 focus:ring-liquidCyan/50 transition-all font-sans text-sm cursor-pointer">
+                                        <option value="" disabled selected>Оберіть роль</option>
+                                        <option value="Учасник змагання">Учасник змагання</option>
+                                        <option value="Ментор">Ментор</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- КРОК 2M: Організація (ТІЛЬКИ ДЛЯ МЕНТОРА) -->
+                        <div id="step_org" class="form-step animate-fade-in">
+                            <div class="space-y-6">
+                                <div>
+                                    <label class="block font-display text-xs font-bold tracking-wider text-gray-300 mb-2 uppercase">Назва організації, яку Ви представляєте <span class="text-liquidMagenta">*</span></label>
+                                    <input type="text" id="org_name" name="entry.2135958356" data-required="true" placeholder="Введіть назву організації" class="w-full bg-[#0a1128]/80 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-liquidMagenta focus:ring-1 focus:ring-liquidMagenta/50 transition-all font-sans text-sm">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- КРОК 2P: Статус (ТІЛЬКИ ДЛЯ УЧАСНИКІВ) -->
+                        <div id="step_status" class="form-step animate-fade-in">
+                            <div class="space-y-6">
+                                <div>
+                                    <label class="block font-display text-xs font-bold tracking-wider text-gray-300 mb-2 uppercase">Ваш статус <span class="text-liquidMagenta">*</span></label>
+                                    <select id="status_select" name="entry.2070120694" data-required="true" class="w-full bg-[#0a1128]/80 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-liquidCyan focus:ring-1 focus:ring-liquidCyan/50 transition-all font-sans text-sm cursor-pointer">
+                                        <option value="" disabled selected>Оберіть статус</option>
+                                        <option value="Школяр">Школяр</option>
+                                        <option value="Студент">Студент</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- КРОК 3S: Дані Школяра -->
+                        <div id="step_school" class="form-step animate-fade-in">
+                            <div class="space-y-6 relative">
+                                <div class="absolute -left-4 md:-left-6 top-0 w-1 h-full bg-liquidCyan rounded-r-md"></div>
+                                <div>
+                                    <label class="block font-display text-xs font-bold tracking-wider text-gray-300 mb-2 uppercase">Навчальний заклад <span class="text-liquidMagenta">*</span></label>
+                                    <input type="text" id="school_name" name="entry.1310324149" data-required="true" placeholder="Наприклад: СЗШ №5" class="w-full bg-[#0a1128]/80 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-liquidCyan focus:ring-1 focus:ring-liquidCyan/50 transition-all font-sans text-sm">
+                                </div>
+                                <div>
+                                    <label class="block font-display text-xs font-bold tracking-wider text-gray-300 mb-2 uppercase">Клас навчання <span class="text-liquidMagenta">*</span></label>
+                                    <select id="school_class" name="entry.22557062" data-required="true" class="w-full bg-[#0a1128]/80 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-liquidCyan focus:ring-1 focus:ring-liquidCyan/50 transition-all font-sans text-sm cursor-pointer">
+                                        <option value="" disabled selected>Оберіть клас</option>
+                                        <option value="7-9">7-9</option>
+                                        <option value="10-11">10-11</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- КРОК 3U: Дані Студента -->
+                        <div id="step_uni" class="form-step animate-fade-in">
+                            <div class="space-y-6 relative">
+                                <div class="absolute -left-4 md:-left-6 top-0 w-1 h-full bg-liquidPurple rounded-r-md"></div>
+                                <div>
+                                    <label class="block font-display text-xs font-bold tracking-wider text-gray-300 mb-2 uppercase">Навчальний заклад <span class="text-liquidMagenta">*</span></label>
+                                    <input type="text" id="uni_name" name="entry.395839910" data-required="true" placeholder="Наприклад: ОНУ ім. Мечнікова" class="w-full bg-[#0a1128]/80 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-liquidPurple focus:ring-1 focus:ring-liquidPurple/50 transition-all font-sans text-sm">
+                                </div>
+                                <div>
+                                    <label class="block font-display text-xs font-bold tracking-wider text-gray-300 mb-2 uppercase">Курс навчання <span class="text-liquidMagenta">*</span></label>
+                                    <select id="uni_course" name="entry.1810054564" data-required="true" class="w-full bg-[#0a1128]/80 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-liquidPurple focus:ring-1 focus:ring-liquidPurple/50 transition-all font-sans text-sm cursor-pointer">
+                                        <option value="" disabled selected>Оберіть курс</option>
+                                        <option value="1 курс">1 курс</option>
+                                        <option value="2 курс">2 курс</option>
+                                        <option value="3 курс">3 курс</option>
+                                        <option value="4 курс">4 курс</option>
+                                        <option value="1 курс (магістр)">1 курс (магістр)</option>
+                                        <option value="2 курс (магістр)">2 курс (магістр)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- КРОК 4P: Назва команди (ТІЛЬКИ ДЛЯ УЧАСНИКІВ) -->
+                        <div id="step_team" class="form-step animate-fade-in">
+                            <div class="space-y-6">
+                                <div>
+                                    <label class="block font-display text-xs font-bold tracking-wider text-gray-300 mb-2 uppercase">Назва команди <span class="text-liquidMagenta">*</span></label>
+                                    <input type="text" id="team_name" name="entry.1082069367" data-required="true" class="w-full bg-[#0a1128]/80 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-liquidCyan focus:ring-1 focus:ring-liquidCyan/50 transition-all font-sans text-sm">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- КРОК 5: Контакти (ДЛЯ ВСІХ) -->
+                        <div id="step_contacts" class="form-step animate-fade-in">
+                            <div class="space-y-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block font-display text-xs font-bold tracking-wider text-gray-300 mb-2 uppercase">Номер телефона <span class="text-liquidMagenta">*</span></label>
+                                        <input type="tel" name="entry.1897358712" data-required="true" class="w-full bg-[#0a1128]/80 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-liquidCyan focus:ring-1 focus:ring-liquidCyan/50 transition-all font-sans text-sm">
+                                    </div>
+                                    <div>
+                                        <label class="block font-display text-xs font-bold tracking-wider text-gray-300 mb-2 uppercase">Email <span class="text-liquidMagenta">*</span></label>
+                                        <input type="email" name="entry.15889348" data-required="true" class="w-full bg-[#0a1128]/80 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-liquidCyan focus:ring-1 focus:ring-liquidCyan/50 transition-all font-sans text-sm">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block font-display text-xs font-bold tracking-wider text-gray-400 mb-2 uppercase">Telegram <span class="text-gray-500 text-[10px] normal-case">(за наявності)</span></label>
+                                        <input type="text" name="entry.1906202684" class="w-full bg-[#0a1128]/80 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-liquidPurple focus:ring-1 focus:ring-liquidPurple/50 transition-all font-sans text-sm">
+                                    </div>
+                                    <div>
+                                        <label class="block font-display text-xs font-bold tracking-wider text-gray-400 mb-2 uppercase">Viber <span class="text-gray-500 text-[10px] normal-case">(за наявності)</span></label>
+                                        <input type="text" name="entry.920498520" class="w-full bg-[#0a1128]/80 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-liquidPurple focus:ring-1 focus:ring-liquidPurple/50 transition-all font-sans text-sm">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- Кінець блоку для кроків -->
+
+                    <!-- НАВІГАЦІЙНІ КНОПКИ (Завжди внизу завдяки mt-auto) -->
+                    <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mt-auto pt-8 border-t border-white/10">
+                        <button type="button" id="btn_back" onclick="prevStep()" class="hidden w-full sm:w-auto px-6 py-3 font-display text-sm tracking-widest text-gray-400 hover:text-white transition-colors">
+                            НАЗАД
+                        </button>
+                        
+                        <button type="button" id="btn_next" onclick="nextStep()" class="w-full sm:w-auto px-10 py-3 font-display font-bold text-sm tracking-widest rounded-xl glass-liquid bg-liquidCyan/10 hover:bg-liquidCyan/20 border-liquidCyan/40 text-white transition-all duration-300 ml-auto">
+                            ДАЛІ
+                        </button>
+
+                        <button type="submit" id="btn_submit" class="hidden w-full sm:w-auto relative items-center justify-center px-10 py-3 overflow-hidden font-display font-bold text-sm tracking-widest rounded-xl group glass-liquid bg-liquidPurple/20 hover:bg-liquidPurple/40 border-liquidPurple/50 text-white transition-all duration-300 ml-auto">
+                            <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-liquidPurple rounded-full group-hover:w-[150%] group-hover:h-[500%] opacity-20"></span>
+                            <span class="relative z-10">НАДІСЛАТИ</span>
+                        </button>
                     </div>
 
-                    <!-- Iframe -->
-                    <iframe 
-                        src="https://docs.google.com/forms/d/e/1FAIpQLSf2l-ghWnnavQ_-STNJUR1PxdPP6mSo4o0dwiVKZSPjS_KQSw/viewform?embedded=true" 
-                        width="100%" 
-                        height="100%" 
-                        frameborder="0" 
-                        marginheight="0" 
-                        marginwidth="0"
-                        class="relative z-10 w-full h-full opacity-90 hover:opacity-100 transition-opacity duration-500 mix-blend-normal"
-                        onload="this.previousElementSibling.style.display='none';"
-                    >Завантаження…</iframe>
-                </div>
+                </form>
             </div>
 
         </div>
@@ -482,9 +614,7 @@
     <!-- FOOTER -->
     <footer class="relative mt-12 md:mt-20 pt-16 md:pt-20 pb-8 md:pb-10 border-t border-white/10 overflow-hidden bg-white/[0.02]">
         <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[200px] md:h-[300px] bg-liquidCyan/10 blur-[120px] rounded-t-[100%] pointer-events-none -z-10"></div>
-        
         <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8 md:gap-10">
-            
             <div class="text-center md:text-left">
                 <div class="font-display text-xl md:text-2xl font-black tracking-widest mb-2">
                     ODS<span class="text-liquidCyan text-glow-cyan">.MOUSE</span>
@@ -492,73 +622,222 @@
                 <p class="font-sans text-gray-500 text-xs md:text-sm font-light mb-1">Одеський національний університет ім. І.І. Мечникова</p>
                 <p class="font-sans text-gray-500 text-xs md:text-sm font-light">Факультет математики, фізики та ІТ</p>
             </div>
-
             <div class="flex gap-4">
                 <a href="#" class="w-10 h-10 md:w-12 md:h-12 glass-liquid shape-blob flex items-center justify-center text-gray-400 hover:text-white hover:border-liquidCyan/50 transition-all bg-white/5">IN</a>
                 <a href="#" class="w-10 h-10 md:w-12 md:h-12 glass-liquid shape-blob flex items-center justify-center text-gray-400 hover:text-white hover:border-liquidPurple/50 transition-all bg-white/5" style="animation-delay: -2s;">TG</a>
                 <a href="#" class="w-10 h-10 md:w-12 md:h-12 glass-liquid shape-blob flex items-center justify-center text-gray-400 hover:text-white hover:border-liquidMagenta/50 transition-all bg-white/5" style="animation-delay: -4s;">FB</a>
             </div>
-
             <div class="font-sans text-gray-600 text-[10px] md:text-xs font-light tracking-widest text-center md:text-right">
                 &copy; 2026 ONU & ODESA IT FAMILY.<br>ВІД СТУДЕНТІВ ДЛЯ СТУДЕНТІВ
             </div>
-            
         </div>
     </footer>
 
     <script>
-        // Обробка помилок завантаження зображень (показ резервного тексту)
-        document.querySelectorAll('.show-on-error').forEach(el => {
-            const img = el.previousElementSibling;
-            if(img && img.tagName === 'IMG') {
-                img.addEventListener('error', () => { el.classList.remove('hidden'); });
-            }
-        });
-
-        // Логіка мобільного меню
+        // Мобільне меню
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const closeMenuBtn = document.getElementById('close-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
         const mobileLinks = document.querySelectorAll('.mobile-link');
 
         function toggleMobileMenu() {
-            const isClosed = mobileMenu.classList.contains('opacity-0');
-            
-            if (isClosed) {
-                // Відкриваємо меню
+            if (mobileMenu.classList.contains('opacity-0')) {
                 mobileMenu.classList.remove('opacity-0', 'pointer-events-none');
-                document.body.classList.add('overflow-hidden'); // Забороняємо скрол фону
+                document.body.classList.add('overflow-hidden');
             } else {
-                // Закриваємо меню
                 mobileMenu.classList.add('opacity-0', 'pointer-events-none');
-                document.body.classList.remove('overflow-hidden'); // Дозволяємо скрол
+                document.body.classList.remove('overflow-hidden');
             }
         }
 
         mobileMenuBtn.addEventListener('click', toggleMobileMenu);
         closeMenuBtn.addEventListener('click', toggleMobileMenu);
-        
-        mobileLinks.forEach(link => {
-            link.addEventListener('click', toggleMobileMenu);
-        });
+        mobileLinks.forEach(link => link.addEventListener('click', toggleMobileMenu));
 
-        // --- Инверсия цвета навигации поверх светлой формы ---
-        const mainNav = document.getElementById('main-nav');
-        const formContainer = document.getElementById('form-container');
+        // ==========================================
+        // ЛОГІКА ПОКРОКОВОЇ ФОРМИ (WIZARD)
+        // ==========================================
 
-        window.addEventListener('scroll', () => {
-            if (!mainNav || !formContainer) return;
-            
-            const navRect = mainNav.getBoundingClientRect();
-            const formRect = formContainer.getBoundingClientRect();
-
-            // Если навигация наслаивается на белый блок формы
-            if (navRect.bottom > formRect.top && navRect.top < formRect.bottom) {
-                mainNav.classList.add('nav-light-mode');
-            } else {
-                mainNav.classList.remove('nav-light-mode');
+        const stepsMap = {
+            'step_intro': {
+                back: null,
+                next: 'step_role'
+            },
+            'step_role': {
+                back: 'step_intro',
+                next: () => document.getElementById('role_select').value === 'Ментор' ? 'step_org' : 'step_status'
+            },
+            'step_org': {
+                back: 'step_role',
+                next: () => 'step_contacts'
+            },
+            'step_status': {
+                back: 'step_role',
+                next: () => document.getElementById('status_select').value === 'Школяр' ? 'step_school' : 'step_uni'
+            },
+            'step_school': {
+                back: 'step_status',
+                next: () => 'step_team'
+            },
+            'step_uni': {
+                back: 'step_status',
+                next: () => 'step_team'
+            },
+            'step_team': {
+                back: () => document.getElementById('status_select').value === 'Школяр' ? 'step_school' : 'step_uni',
+                next: () => 'step_contacts'
+            },
+            'step_contacts': {
+                back: () => document.getElementById('role_select').value === 'Ментор' ? 'step_org' : 'step_team',
+                next: null 
             }
-        });
+        };
+
+        // Встановлюємо перший крок (з правилами)
+        let currentStepId = 'step_intro';
+
+        function renderStep(stepId) {
+            document.querySelectorAll('.form-step').forEach(el => {
+                el.classList.remove('active');
+                el.querySelectorAll('input, select').forEach(input => {
+                    if (input.dataset.required === 'true') {
+                        input.removeAttribute('required');
+                    }
+                });
+            });
+
+            const currentEl = document.getElementById(stepId);
+            currentEl.classList.add('active');
+            currentEl.querySelectorAll('input, select').forEach(input => {
+                if (input.dataset.required === 'true') {
+                    input.setAttribute('required', 'required');
+                }
+            });
+
+            const btnBack = document.getElementById('btn_back');
+            const btnNext = document.getElementById('btn_next');
+            const btnSubmit = document.getElementById('btn_submit');
+
+            const stepConfig = stepsMap[stepId];
+
+            if (stepConfig.back) {
+                btnBack.classList.remove('hidden');
+            } else {
+                btnBack.classList.add('hidden');
+            }
+
+            if (stepConfig.next) {
+                btnNext.classList.remove('hidden');
+                btnSubmit.classList.add('hidden');
+            } else {
+                btnNext.classList.add('hidden');
+                btnSubmit.classList.remove('hidden');
+                btnSubmit.classList.add('flex');
+            }
+        }
+
+        function nextStep() {
+            const currentEl = document.getElementById(currentStepId);
+            const inputs = currentEl.querySelectorAll('input, select');
+            let isValid = true;
+            
+            for (let input of inputs) {
+                if (!input.checkValidity()) {
+                    input.reportValidity(); 
+                    isValid = false;
+                    break;
+                }
+            }
+
+            if (isValid && stepsMap[currentStepId].next) {
+                const nextId = typeof stepsMap[currentStepId].next === 'function' 
+                    ? stepsMap[currentStepId].next() 
+                    : stepsMap[currentStepId].next;
+                
+                currentStepId = nextId;
+                renderStep(currentStepId);
+            }
+        }
+
+        function prevStep() {
+            if (stepsMap[currentStepId].back) {
+                const backId = typeof stepsMap[currentStepId].back === 'function' 
+                    ? stepsMap[currentStepId].back() 
+                    : stepsMap[currentStepId].back;
+                
+                currentStepId = backId;
+                renderStep(currentStepId);
+            }
+        }
+
+        renderStep(currentStepId);
+
+        // --- Сабміт форми ---
+        function prepareSubmit(e) {
+            const role = document.getElementById('role_select').value;
+            const status = document.getElementById('status_select').value;
+            const pageHistoryInput = document.querySelector('input[name="pageHistory"]');
+            
+            const orgFields = document.querySelectorAll('#step_org input, #step_org select');
+            const statusFields = document.querySelectorAll('#step_status input, #step_status select');
+            const schoolFields = document.querySelectorAll('#step_school input, #step_school select');
+            const uniFields = document.querySelectorAll('#step_uni input, #step_uni select');
+            const teamFields = document.querySelectorAll('#step_team input, #step_team select');
+
+            // 1) Вмикаємо всі поля, щоб підготувати до відправки (скидаємо можливий попередній стан)
+            document.querySelectorAll('input, select').forEach(node => {
+                node.disabled = false;
+            });
+
+            // Функція відключення полів. У HTML, якщо поле disabled, воно ВЗАГАЛІ не відправляється на сервер.
+            // Це ідеально емулює пропуск необов'язкових блоків у Google Forms.
+            const toggleDisable = (nodes, disable) => {
+                nodes.forEach(node => { node.disabled = disable; });
+            };
+
+            // Логіка відключення непотрібних полів і формування pageHistory
+            if (role === 'Ментор') {
+                pageHistoryInput.value = "0,1,3,7";
+                toggleDisable(statusFields, true);
+                toggleDisable(schoolFields, true);
+                toggleDisable(uniFields, true);
+                toggleDisable(teamFields, true);
+                toggleDisable(orgFields, false);
+            } else {
+                toggleDisable(orgFields, true);
+                toggleDisable(statusFields, false);
+                toggleDisable(teamFields, false);
+
+                if (status === 'Школяр') {
+                    pageHistoryInput.value = "0,1,2,4,6,7";
+                    toggleDisable(schoolFields, false);
+                    toggleDisable(uniFields, true);
+                } else if (status === 'Студент') {
+                    pageHistoryInput.value = "0,1,2,5,6,7";
+                    toggleDisable(schoolFields, true);
+                    toggleDisable(uniFields, false);
+                }
+            }
+            
+            // Анімація кнопки
+            const btn = document.getElementById('btn_submit');
+            btn.innerHTML = '<span class="relative z-10">ВІДПРАВКА...</span>';
+            btn.classList.add('animate-pulse', 'opacity-70', 'pointer-events-none');
+
+            // Автоматичне перемикання екрану через 1.5 секунди (без очікування iframe)
+            setTimeout(() => {
+                document.getElementById('custom_form').style.display = 'none';
+                const successMsg = document.getElementById('success_msg');
+                successMsg.classList.remove('hidden');
+                successMsg.classList.add('flex');
+                
+                window.scrollTo({
+                    top: document.getElementById('register').offsetTop - 50,
+                    behavior: 'smooth'
+                });
+            }, 1500);
+        }
+
     </script>
 </body>
 </html>
