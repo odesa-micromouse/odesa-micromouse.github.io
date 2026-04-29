@@ -323,7 +323,7 @@
                         <div class="glass-liquid glass-card rounded-2xl p-5 md:p-6 flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4 md:gap-6 group hover:bg-white/5 transition-colors cursor-default border-t sm:border-t-0 sm:border-l-liquidPurple/50">
                             <div class="w-14 h-14 md:w-16 md:h-16 rounded-full glass-liquid flex-shrink-0 flex items-center justify-center text-liquidPurple font-display font-bold text-xl md:text-2xl shadow-[inset_0_0_10px_rgba(138,43,226,0.2)] group-hover:rotate-12 transition-transform">02</div>
                             <div>
-                                <h4 class="font-display text-lg md:text-xl font-bold text-white tracking-wide">ШКОЛЯРІ (14+)</h4>
+                                <h4 class="font-display text-lg md:text-xl font-bold text-white tracking-wide">ШКОЛЯРІ (12+)</h4>
                                 <p class="font-sans text-gray-200 md:text-gray-400 mt-1 text-sm md:text-base md:font-light">Перший серйозний крок у світ робототехніки та STEM-освіти.</p>
                             </div>
                         </div>
@@ -407,10 +407,12 @@
                 </div>
 
                 <!-- Багатошагова форма -->
-                <form id="custom_form" action="https://docs.google.com/forms/u/1/d/e/1FAIpQLSf2l-ghWnnavQ_-STNJUR1PxdPP6mSo4o0dwiVKZSPjS_KQSw/formResponse?pli=1" method="POST" target="hidden_iframe" onsubmit="prepareSubmit(event)" class="relative z-20 flex flex-col flex-grow justify-between">
+                <form id="custom_form" action="https://docs.google.com/forms/d/e/1FAIpQLSf2l-ghWnnavQ_-STNJUR1PxdPP6mSo4o0dwiVKZSPjS_KQSw/formResponse" method="POST" target="hidden_iframe" onsubmit="prepareSubmit(event)" class="relative z-20 flex flex-col flex-grow justify-between">
                     
                     <input type="hidden" name="fvv" value="1">
-                    <input type="hidden" name="fbzx" value="6805073827137308082">
+                    <input type="hidden" name="fbzx" value="-3339246716622675915">
+                    <input type="hidden" name="partialResponse" value="[null,null,&quot;-3339246716622675915&quot;]">
+                    
                     <!-- pageHistory динамічно оновлюється в JS -->
                     <input type="hidden" name="pageHistory" value="0,1,2,3,4,5,6,7">
 
@@ -421,48 +423,29 @@
                         <div id="step_intro" class="form-step active animate-fade-in">
                             <div class="text-scrollbar pr-4 max-h-[55vh] md:max-h-[60vh] overflow-y-auto font-sans text-gray-300 text-sm md:text-base leading-relaxed">
                                 
-                                <!-- Блок Студенти -->
-                                <div class="mb-8">
-                                    <h3 class="font-display font-bold text-liquidCyan text-xl md:text-2xl mb-4">Змагання для студентів: <br><span class="text-white">3D-Лабіринт</span></h3>
-                                    <p class="mb-4">Студенти повинні представити робота, який самостійно знайде шлях до центру лабіринту.</p>
-                                    
-                                    <h4 class="font-bold text-white mb-1">Етап підготовки та перевірки:</h4>
-                                    <p class="mb-4 text-gray-400">Перед початком кожного заїзду судді перевіряють габарити робота. Він має вільно рухатися у коридорах шириною 170 мм. Будь-яке дистанційне керування (Bluetooth, Wi-Fi тощо) має бути вимкнено - робот повинен діяти виключно за власним алгоритмом.</p>
+                                <h3 class="font-display font-bold text-liquidCyan text-xl md:text-2xl mb-4">Правила та вимоги <br><span class="text-white">Micromouse 3D</span></h3>
+                                
+                                <p class="mb-4 text-gray-300">Змагання відкриті для всіх учасників віком від 12 років, школярів або студентів. Кожна команда має право обрати одну або обидві дисципліни, виходячи з технічних можливостей свого робота.</p>
 
-                                    <h4 class="font-bold text-white mb-1">Логіка проходження:</h4>
-                                    <p class="mb-4 text-gray-400">Лабіринт складається з сітки 16x16 одиничних квадратів. Оскільки прості алгоритми (наприклад, "рух вздовж лівої стіни") спеціально заблоковані конфігурацією лабіринту, робот повинен мати в пам'яті алгоритм побудови карти (наприклад, Flood Fill).</p>
-
-                                    <h4 class="font-bold text-white mb-1">Часовий регламент:</h4>
-                                    <p class="mb-4 text-gray-400">Кожній команді надається 10 хвилин. За цей час робот може робити кілька спроб. Таймер не зупиняється між заїздами. Мета - зафіксувати найшвидший чистий час пробігу від стартового кута до центральної зони.</p>
-
-                                    <h4 class="font-bold text-white mb-1">Штрафні бали:</h4>
-                                    <p class="text-gray-400">Робот не має торкатися стін. Кожне зіткнення, яке помітить суддя, додає 0,5 секунди до фінального часу.</p>
+                                <div class="mb-6">
+                                    <h4 class="font-bold text-white mb-2 text-lg">Дисципліна 3D-лабіринт</h4>
+                                    <p class="text-gray-400">Вимагає від робота автономного пошуку шляху до центру поля розміром 16 на 16 клітинок. Оскільки конфігурація стін унеможливлює використання простих методів обходу, учаснику необхідно реалізувати алгоритм побудови карти. Конструкція пристрою має дозволяти вільний рух у коридорах шириною 170 мм. На виконання завдання надається 10 хвилин, протягом яких можна робити декілька спроб. Фінальний результат базується на часі найшвидшого пробігу з урахуванням штрафних 0,5 секунди за кожне зіткнення зі стіною.</p>
                                 </div>
 
-                                <div class="w-full h-px bg-gradient-to-r from-liquidCyan/50 to-liquidPurple/50 my-8"></div>
+                                <div class="mb-6">
+                                    <h4 class="font-bold text-white mb-2 text-lg">Дисципліна Швидкісна траса</h4>
+                                    <p class="text-gray-400">Зосереджена на максимально швидкому подоланні кільцевого маршруту по чорній лінії. Робот повинен бути компактним, вагою до 1,5 кг та розмірами не більше 25 на 25 см. Змагання складаються з трьох раундів із різними напрямками руху, де до заліку йде найкращий час одного повного кола. Важливою умовою є точність навігації: якщо проєкція робота повністю виходить за межі лінії, заїзд вважається невдалим.</p>
+                                </div>
 
-                                <!-- Блок Школярі -->
-                                <div>
-                                    <h3 class="font-display font-bold text-liquidPurple text-xl md:text-2xl mb-4">Змагання для школярів: <br><span class="text-white">Швидкісна траса</span></h3>
-                                    <p class="mb-4">Це змагання на точність та швидкість реакції сенсорів. Роботи повинні максимально швидко подолати кільцеву дистанцію, орієнтуючись за чорною лінією.</p>
+                                <div class="mb-6">
+                                    <h4 class="font-bold text-white mb-2 text-lg">Загальні правила</h4>
+                                    <p class="text-gray-400">Передбачають повну автономність пристроїв та заборону дистанційного керування. Учасники зобов’язані самостійно забезпечити себе необхідним інструментарієм, акумуляторами та програмним забезпеченням. Перед початком заїздів усі роботи проходять обов’язкову технічну перевірку на відповідність вимогам безпеки та габаритам. Будь-яке втручання в роботу пристрою після старту або використання заборонених джерел енергії призводить до дискваліфікації.</p>
+                                </div>
 
-                                    <h4 class="font-bold text-white mb-1">Технічний контроль:</h4>
-                                    <p class="mb-4 text-gray-400">Робот має бути компактним (до 25х25 см) та важити не більше 1,5 кг. Судді перевіряють безпеку конструкції: відсутність гострих частин, токсичних матеріалів та джерел горіння.</p>
-
-                                    <h4 class="font-bold text-white mb-1">Процес змагань:</h4>
-                                    <p class="mb-2 text-gray-400">Змагання проходять у три раунди.</p>
-                                    <ul class="list-disc pl-5 mb-4 text-gray-400 space-y-1">
-                                        <li>Перший раунд: рух за годинниковою стрілкою.</li>
-                                        <li>Другий раунд: рух проти годинникової стрілки.</li>
-                                        <li>Третій раунд: напрямок обирає сама команда.</li>
-                                    </ul>
-                                    <p class="mb-4 text-gray-400">Такий підхід дозволяє перевірити універсальність налаштувань датчиків.</p>
-
-                                    <h4 class="font-bold text-white mb-1">Умови дискваліфікації:</h4>
-                                    <p class="mb-4 text-gray-400">Якщо робот повністю втрачає лінію (жодна частина його корпусу не знаходиться над трасою), спроба вважається невдалою. Учасникам заборонено торкатися робота руками після старту.</p>
-
-                                    <h4 class="font-bold text-white mb-1">Визначення переможців:</h4>
-                                    <p class="mb-2 text-gray-400">До заліку йде найкращий час з усіх успішних раундів. Тривалість однієї спроби обмежена 180 секундами.</p>
+                                <div class="glass-liquid rounded-xl p-5 bg-liquidCyan/10 border-liquidCyan/30 mt-6 text-center shadow-[0_0_20px_rgba(0,240,255,0.1)]">
+                                    <p class="text-liquidCyan font-bold mb-0 text-sm">
+                                        Обовʼязково ознайомтесь з <a href="https://docs.google.com/document/d/1mLx4O1udWZXHX-V9hS8mrGc_JE0wNYLLZIpUASvP3aI/edit?usp=sharing" target="_blank" class="underline hover:text-white transition-colors">повними вимогами до роботів, які можуть приймати участь у змаганнях</a>.
+                                    </p>
                                 </div>
 
                             </div>
@@ -568,7 +551,7 @@
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
                                         <label class="block font-display text-xs font-bold tracking-wider text-gray-300 mb-2 uppercase">Номер телефона <span class="text-liquidMagenta">*</span></label>
-                                        <input type="tel" name="entry.1897358712" data-required="true" class="w-full bg-[#0a1128]/80 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-liquidCyan focus:ring-1 focus:ring-liquidCyan/50 transition-all font-sans text-sm">
+                                        <input type="tel" name="entry.1897358712" data-required="true" pattern="^\+380\d{9}$" title="Введіть номер у форматі +380XXXXXXXXX" placeholder="+380XXXXXXXXX" class="w-full bg-[#0a1128]/80 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-liquidCyan focus:ring-1 focus:ring-liquidCyan/50 transition-all font-sans text-sm">
                                     </div>
                                     <div>
                                         <label class="block font-display text-xs font-bold tracking-wider text-gray-300 mb-2 uppercase">Email <span class="text-liquidMagenta">*</span></label>
@@ -778,44 +761,30 @@
             const status = document.getElementById('status_select').value;
             const pageHistoryInput = document.querySelector('input[name="pageHistory"]');
             
-            const orgFields = document.querySelectorAll('#step_org input, #step_org select');
-            const statusFields = document.querySelectorAll('#step_status input, #step_status select');
-            const schoolFields = document.querySelectorAll('#step_school input, #step_school select');
-            const uniFields = document.querySelectorAll('#step_uni input, #step_uni select');
-            const teamFields = document.querySelectorAll('#step_team input, #step_team select');
-
-            // 1) Вмикаємо всі поля, щоб підготувати до відправки (скидаємо можливий попередній стан)
+            // 1) Вмикаємо всі поля перед відправкою, щоб відправилися ВСІ заповнені дані
+            // Ми більше не блокуємо поля через node.disabled = true, 
+            // оскільки Google Форми самі ігнорують зайві поля на основі pageHistory
             document.querySelectorAll('input, select').forEach(node => {
                 node.disabled = false;
             });
 
-            // Функція відключення полів. У HTML, якщо поле disabled, воно ВЗАГАЛІ не відправляється на сервер.
-            // Це ідеально емулює пропуск необов'язкових блоків у Google Forms.
-            const toggleDisable = (nodes, disable) => {
-                nodes.forEach(node => { node.disabled = disable; });
-            };
+            // 2) Логіка формування правильного pageHistory (всього 8 сторінок у Google Формі, індекси 0-7)
+            // 0: Правила (текст)
+            // 1: ПІБ, Роль
+            // 2: Статус (Школяр/Студент)
+            // 3: Організація (Ментор)
+            // 4: Дані Школяра
+            // 5: Дані Студента
+            // 6: Назва команди
+            // 7: Контакти
 
-            // Логіка відключення непотрібних полів і формування pageHistory
             if (role === 'Ментор') {
                 pageHistoryInput.value = "0,1,3,7";
-                toggleDisable(statusFields, true);
-                toggleDisable(schoolFields, true);
-                toggleDisable(uniFields, true);
-                toggleDisable(teamFields, true);
-                toggleDisable(orgFields, false);
             } else {
-                toggleDisable(orgFields, true);
-                toggleDisable(statusFields, false);
-                toggleDisable(teamFields, false);
-
                 if (status === 'Школяр') {
                     pageHistoryInput.value = "0,1,2,4,6,7";
-                    toggleDisable(schoolFields, false);
-                    toggleDisable(uniFields, true);
                 } else if (status === 'Студент') {
                     pageHistoryInput.value = "0,1,2,5,6,7";
-                    toggleDisable(schoolFields, true);
-                    toggleDisable(uniFields, false);
                 }
             }
             
@@ -824,7 +793,7 @@
             btn.innerHTML = '<span class="relative z-10">ВІДПРАВКА...</span>';
             btn.classList.add('animate-pulse', 'opacity-70', 'pointer-events-none');
 
-            // Автоматичне перемикання екрану через 1.5 секунди (без очікування iframe)
+            // Автоматичне перемикання екрану через 1.5 секунди
             setTimeout(() => {
                 document.getElementById('custom_form').style.display = 'none';
                 const successMsg = document.getElementById('success_msg');
